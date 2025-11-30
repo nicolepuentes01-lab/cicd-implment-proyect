@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>Crear Pedido</h2>
+    <form method="POST" action="{{ url_for('pedido_views.create_pedido_post') }}">
+        <div class="form-group">
+            <label for="cliente_id">Cliente:</label>
+            <select name="cliente_id" id="cliente_id" class="form-control" required>
+                {% for cliente in clientes %}
+                    <option value="{{ cliente.id }}">{{ cliente.nombre }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="producto_ids">Productos:</label>
+            <select name="producto_ids" id="producto_ids" class="form-control" multiple required>
+                {% for producto in productos %}
+                    <option value="{{ producto.id }}">{{ producto.nombre }} - ${{ producto.precio }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Crear Pedido</button>
+    </form>
+{% endblock %}

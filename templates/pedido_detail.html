@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>Detalles del Pedido #{{ pedido.id }}</h2>
+    <p><strong>Cliente:</strong> {{ pedido.cliente.nombre }}</p>
+    <h3>Productos:</h3>
+    <ul>
+        {% for producto in pedido.productos %}
+            <li>{{ producto.nombre }} - ${{ producto.precio }}</li>
+        {% endfor %}
+    </ul>
+    <p><strong>Total:</strong> ${{ pedido.total }}</p>
+    <a href="{{ url_for('pedido_views.pedido_edit', id=pedido.id) }}" class="btn btn-warning">Editar Pedido</a>
+    <form action="{{ url_for('pedido_views.delete_pedido', id=pedido.id) }}" method="POST" style="display:inline;">
+        <button type="submit" class="btn btn-danger">Eliminar Pedido</button>
+    </form>
+    <a href="{{ url_for('pedido_views.pedido_list') }}" class="btn btn-secondary">Volver a la lista</a>
+{% endblock %}

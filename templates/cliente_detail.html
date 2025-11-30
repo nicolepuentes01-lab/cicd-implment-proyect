@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h2>Cliente Detalles</h2>
+    <ul class="list-group">
+        <li class="list-group-item"><strong>Nombre:</strong> {{ cliente.nombre }}</li>
+        <li class="list-group-item"><strong>Email:</strong> {{ cliente.email }}</li>
+    </ul>
+    <a href="{{ url_for('cliente_views.cliente_edit', id=cliente.id) }}" class="btn btn-warning">Editar</a>
+    <form action="{{ url_for('cliente_views.delete_cliente', id=cliente.id) }}" method="POST" style="display:inline;">
+        <button type="submit" class="btn btn-danger">Eliminar</button>
+    </form>
+    <a href="{{ url_for('cliente_views.cliente_list') }}" class="btn btn-secondary">Atras</a>
+</div>
+{% endblock %}

@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center my-5">
+                <h1 class="display-4">Bienvenido a la Aplicación</h1>
+                <p class="lead">Esta aplicación te permite gestionar productos, clientes y pedidos de manera eficiente.</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="card-title">Estadísticas Generales</h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">Aquí se pueden mostrar estadísticas de la aplicación como el número de productos, clientes y pedidos.</p>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">Productos: <strong id="product-count">Cargando...</strong></li>
+                            <li class="list-group-item">Clientes: <strong id="client-count">Cargando...</strong></li>
+                            <li class="list-group-item">Pedidos: <strong id="order-count">Cargando...</strong></li>
+                        </ul>
+                    </div>
+                    <div class="card-footer text-center">
+                        <button class="btn btn-primary">Ver más detalles</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Agregar el script que hace la petición AJAX -->
+    <script>
+        // Función para obtener la cantidad de productos, clientes y pedidos desde la API
+        async function fetchStatistics() {
+            try {
+                const productResponse = await fetch('/api/productos');
+                const productData = await productResponse.json();
+                document.getElementById('product-count').textContent = productData.count;
+
+                const clientResponse = await fetch('/api/clientes');
+                const clientData = await clientResponse.json();
+                document.getElementById('client-count').textContent = clientData.count;
+
+                const orderResponse = await fetch('/api/pedidos');
+                const orderData = await orderResponse.json();
+                document.getElementById('order-count').textContent = orderData.count;
+            } catch (error) {
+                console.error('Error al obtener estadísticas:', error);
+                // Si hay un error, mostrar un mensaje en lugar de los números
+                document.getElementById('product-count').textContent = 'Error';
+                document.getElementById('client-count').textContent = 'Error';
+                document.getElementById('order-count').textContent = 'Error';
+            }
+        }
+
+        // Llamar a la función cuando se carga la página
+        window.onload = fetchStatistics;
+    </script>
+{% endblock %}

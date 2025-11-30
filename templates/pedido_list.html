@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">Lista de Pedidos</h2>
+
+    <!-- Botón para crear nuevo pedido -->
+    <div class="mb-3">
+        <a href="{{ url_for('pedido_views.pedido_create') }}" class="btn btn-success">
+            <i class="fas fa-plus-circle"></i> Crear Nuevo Pedido
+        </a>
+    </div>
+
+    <!-- Tabla de pedidos -->
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Cliente</th>
+                    <th>Productos</th>
+                    <th>Total</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for pedido in pedidos %}
+                <tr>
+                    <td>{{ pedido.id }}</td>
+                    <td>{{ pedido.cliente.nombre }}</td>
+                    <td>
+                        <ul class="list-unstyled mb-0">
+                            {% for producto in pedido.productos %}
+                            <li>{{ producto.nombre }}</li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+                    <td>${{ pedido.total }}</td>
+                    <td>
+                        <a href="{{ url_for('pedido_views.pedido_detail', id=pedido.id) }}"
+                            class="btn btn-info btn-sm">Ver Detalles</a>
+
+                        <a href="{{ url_for('pedido_views.pedido_edit', id=pedido.id) }}"
+                            class="btn btn-warning btn-sm">
+                            <i class="fas fa-edit"></i> Editar
+                        </a>
+                        <form action="{{ url_for('pedido_views.delete_pedido', id=pedido.id) }}" method="POST"
+                            style="display:inline;">
+                            <button type="submit" class="btn btn-danger btn-sm"
+                                onclick="return confirm('¿Estás seguro de que deseas eliminar este pedido?');">
+                                <i class="fas fa-trash-alt"></i> Eliminar
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

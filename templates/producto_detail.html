@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="container mt-5">
+    <h2>Detalles del Producto</h2>
+    <p><strong>Nombre:</strong> {{ producto.nombre }}</p>
+    <p><strong>Descripción:</strong> {{ producto.descripcion }}</p>
+    <p><strong>Precio:</strong> ${{ producto.precio }}</p>
+
+    <a href="{{ url_for('producto_views.producto_edit', id=producto.id) }}" class="btn btn-warning">Editar</a>
+    <form action="{{ url_for('producto_views.delete_producto', id=producto.id) }}" method="POST" style="display:inline;">
+      <button type="submit" class="btn btn-danger">Eliminar</button>
+    </form>
+    <br>
+    <a href="{{ url_for('producto_views.producto_list') }}" class="btn btn-secondary mt-3">Regresar a la lista de productos</a>
+  </div>
+{% endblock %}

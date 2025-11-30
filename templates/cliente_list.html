@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h2>Lista de Clientes</h2>
+    <a href="{{ url_for('cliente_views.cliente_create') }}" class="btn btn-success mb-3">Crear Nuevo Cliente</a>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Nombre</th>
+                <th>Email</th>
+                <th>Accion</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for cliente in clientes %}
+            <tr>
+                <td>{{ cliente.id }}</td>
+                <td>{{ cliente.nombre }}</td>
+                <td>{{ cliente.email }}</td>
+                <td>
+                    <a href="{{ url_for('cliente_views.cliente_detail', id=cliente.id) }}" class="btn btn-info">Ver</a>
+                    <a href="{{ url_for('cliente_views.cliente_edit', id=cliente.id) }}" class="btn btn-warning">Editar</a>
+                    <form action="{{ url_for('cliente_views.delete_cliente', id=cliente.id) }}" method="POST" style="display:inline;">
+                        <button type="submit" class="btn btn-danger">Eliminar</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
