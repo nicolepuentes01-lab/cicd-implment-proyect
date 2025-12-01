@@ -23,8 +23,13 @@ def create_app():
     from model.cliente import Cliente    # noqa: F401
     from model.pedido import Pedido      # noqa: F401
 
-    with app.app_context():
-        db.create_all()
+    @app.before_first_request
+    def _init_schema_once():
+        auto = os.getenv("AUTO_CREATE_DB", "false").lower() in {"1", "true", "yes"}
+        uri = app.config.get("SQLALCHEMY_DATABASE_URI", "") or ""
+        if auto or uri.startswith("sqlite"):
+            with app.app_context():
+                db.create_all()
 
     # Register blueprints
     from controllers.producto import api as producto_api
