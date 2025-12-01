@@ -22,26 +22,27 @@ pipeline {
             }
         }
 
-       stage('Tests & Coverage') {
+        stage('Tests & Coverage') {
             steps {
                 echo '🧪 Ejecutando tests con pytest y subiendo cobertura a Codecov...'
                 withCredentials([string(credentialsId: 'CODECOV_TOKEN', variable: 'CODECOV_TOKEN')]) {
                     sh '''
-                        docker run --rm \
-                            -v $PWD:/app \
-                            -w /app \
+                        docker run --rm \\
+                            -w /app \\
                             integracion-continua-app sh -c "
+                                # 1. Aseguramos que Python pueda importar módulos internos
+                                export PYTHONPATH=$PYTHONPATH:/app && 
+                                # 2. Ejecutamos Pytest contra el código ya dentro de la imagen
                                 pytest tests/ --cov=. --cov-report=xml:coverage.xml &&
                                 curl -s https://uploader.codecov.io/latest/linux/codecov -o codecov &&
                                 chmod +x codecov &&
-                                ./codecov -t $CODECOV_TOKEN -f coverage.xml
+                                ./codecov -t \$CODECOV_TOKEN -f coverage.xml
                             "
                     '''
                 }
             }
         }
-
-
+        
         stage('Deploy con Docker Compose') {
             steps {
                 echo 'Levantando contenedores de DB y App...'
