@@ -49,6 +49,9 @@ def env_vars(monkeypatch):
 def app():
     create_app = _load_create_app()
     application = create_app()
+    application.config["TESTING"] = True
+    application.config["PROPAGATE_EXCEPTIONS"] = True
+    application.config.setdefault("SQLALCHEMY_DATABASE_URI", "sqlite:///:memory:")
     with application.app_context():
         db.create_all()
         try:
