@@ -31,7 +31,7 @@ pipeline {
                             -v $PWD:/app \
                             -w /app \
                             integracion-continua-app sh -c "
-                                pytest --cov=. --cov-report=xml:coverage.xml &&
+                                pytest tests/ --cov=. --cov-report=xml:coverage.xml &&
                                 curl -s https://uploader.codecov.io/latest/linux/codecov -o codecov &&
                                 chmod +x codecov &&
                                 ./codecov -t $CODECOV_TOKEN -f coverage.xml
